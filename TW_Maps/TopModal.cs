@@ -1,8 +1,8 @@
 namespace TW_Maps
 {
-    public partial class Form1 : Form
+    public partial class TopModal : Form
     {
-        public Form1()
+        public TopModal()
         {
             InitializeComponent();
         }
