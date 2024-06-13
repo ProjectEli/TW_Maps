@@ -8,6 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Copyright>2024 ProjectEli</Copyright>
     <PackageProjectUrl>https://projecteli.tistory.com</PackageProjectUrl>
+    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>

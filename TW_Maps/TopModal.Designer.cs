@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.InteropServices;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace TW_Maps
@@ -14,6 +15,16 @@ namespace TW_Maps
         bool fixedLocation = false;
         bool disabledShortcut = false;
         private ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
+
+        // for always on top
+        private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        private const UInt32 SWP_NOSIZE = 0x0001;
+        private const UInt32 SWP_NOMOVE = 0x0002;
+        private const UInt32 TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE;
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
         // create scale list
         static List<double> scales = new List<double>() { 0.5, 0.75, 1.0, 1.5, 2.0 };
@@ -54,10 +65,13 @@ namespace TW_Maps
             KeyPreview = true;
             Name = "TopModal";
             Text = "TW_Maps";
-            ResumeLayout(false);
+            TopMost = true;
+            
 
             MouseDown += TopModal_MouseDown;
             KeyDown += TopModal_KeyDown;
+
+            
 
             //// Define Sizes
             //clientSizes.AddRange(scales.Select(k => new Size((int)(baseClientWidth * k), (int)(baseClientHeight * k))));
@@ -65,6 +79,10 @@ namespace TW_Maps
             // Context menu
             contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(cms_Opening);
             ContextMenuStrip = contextMenuStrip;
+
+            ResumeLayout(false);
+
+            SetWindowPos(this.Handle, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS);
 
         }
 
